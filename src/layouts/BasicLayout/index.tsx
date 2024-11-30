@@ -14,6 +14,8 @@ import Link from "next/link";
 import GlobalFooter from "@/app/components/GlobalFooter";
 import "./index.css";
 import { menus } from "../../../config/menu";
+import {useSelector} from "react-redux";
+import {RootState} from "@/stores";
 
 /**
  * 搜索条
@@ -58,6 +60,9 @@ interface Props {
  */
 export default function BasicLayout({ children }: Props) {
   const pathname = usePathname();
+
+  const loginUser = useSelector((state: RootState) => state.loginUser);
+
   return (
     <div
       id="basic-layout"
@@ -71,7 +76,7 @@ export default function BasicLayout({ children }: Props) {
         layout="top"
         logo={
           <Image
-            src="/assets/logo.svg"
+            src="/assets/logo.png"
             width={32}
             height={32}
             alt="CodePilot 面试刷题网站 - 寒山"
@@ -81,9 +86,9 @@ export default function BasicLayout({ children }: Props) {
           pathname,
         }}
         avatarProps={{
-          src: "https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg",
+          src: loginUser.userAvatar || "/assets/notLoginUser",
           size: "small",
-          title: "寒山",
+          title: loginUser.userName || "CodePilot",
           render: (props, dom) => {
             return (
               <Dropdown
