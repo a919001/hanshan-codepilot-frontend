@@ -1,21 +1,17 @@
 "use client";
 
-import {
-  GithubFilled,
-  LogoutOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
-import { ProLayout } from "@ant-design/pro-components";
-import { Dropdown, Input } from "antd";
+import {GithubFilled, LogoutOutlined, SearchOutlined,} from "@ant-design/icons";
+import {ProLayout} from "@ant-design/pro-components";
+import {Dropdown, Input} from "antd";
 import React from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import {usePathname} from "next/navigation";
 import Link from "next/link";
 import GlobalFooter from "@/app/components/GlobalFooter";
 import "./index.css";
-import { menus } from "../../../config/menu";
 import {useSelector} from "react-redux";
 import {RootState} from "@/stores";
+import getAccessibleMenus from "@/access/menuAccess";
 
 /**
  * 搜索条
@@ -61,6 +57,7 @@ interface Props {
 export default function BasicLayout({ children }: Props) {
   const pathname = usePathname();
 
+  // 当前登录用户
   const loginUser = useSelector((state: RootState) => state.loginUser);
 
   return (
@@ -132,7 +129,7 @@ export default function BasicLayout({ children }: Props) {
         onMenuHeaderClick={(e) => console.log(e)}
         // 定义菜单栏
         menuDataRender={() => {
-          return menus;
+          return getAccessibleMenus(loginUser);
         }}
         // 渲染菜单
         menuItemRender={(item, dom) => (
