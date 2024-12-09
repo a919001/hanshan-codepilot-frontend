@@ -1,49 +1,21 @@
 "use client";
 
-import {GithubFilled, LogoutOutlined, SearchOutlined,} from "@ant-design/icons";
-import {ProLayout} from "@ant-design/pro-components";
-import {Dropdown, Input} from "antd";
+import { GithubFilled, LogoutOutlined } from "@ant-design/icons";
+import { ProLayout } from "@ant-design/pro-components";
+import { Dropdown, message } from "antd";
 import React from "react";
 import Image from "next/image";
-import {usePathname} from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import GlobalFooter from "@/app/components/GlobalFooter";
 import "./index.css";
-import {useSelector} from "react-redux";
-import {RootState} from "@/stores";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/stores";
 import getAccessibleMenus from "@/access/menuAccess";
-
-/**
- * 搜索条
- * @constructor
- */
-const SearchInput = () => {
-  return (
-    <div
-      key="SearchOutlined"
-      aria-hidden
-      style={{
-        display: "flex",
-        alignItems: "center",
-        marginInlineEnd: 24,
-      }}
-      onMouseDown={(e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      }}
-    >
-      <Input
-        style={{
-          borderRadius: 4,
-          marginInlineEnd: 12,
-        }}
-        prefix={<SearchOutlined />}
-        placeholder="搜索题目"
-        variant="borderless"
-      />
-    </div>
-  );
-};
+import { userLogoutUsingPost } from "@/api/userController";
+import { setLoginUser } from "@/stores/loginUser";
+import { DEFAULT_USER } from "@/constants/uesr";
+import SearchInput from "@/layouts/BasicLayout/components/SearchInput";
 
 interface Props {
   children: React.ReactNode;
@@ -59,6 +31,23 @@ export default function BasicLayout({ children }: Props) {
 
   // 当前登录用户
   const loginUser = useSelector((state: RootState) => state.loginUser);
+  const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
+
+  /**
+   * 用户注销
+   */
+  const userLogout = async () => {
+    try {
+      await userLogoutUsingPost();
+      message.success("已退出登录");
+      // 保存用户登录态
+      dispatch(setLoginUser(DEFAULT_USER));
+      router.replace("/user/login");
+    } catch (e: any) {
+      message.error("操作失败，" + e.message);
+    }
+  };
 
   return (
     <div
@@ -83,11 +72,11 @@ export default function BasicLayout({ children }: Props) {
           pathname,
         }}
         avatarProps={{
-          src: loginUser.userAvatar || "/assets/notLoginUser",
+          src: loginUser.userAvatar || "/assets/logo.png",
           size: "small",
           title: loginUser.userName || "CodePilot",
           render: (props, dom) => {
-            return (
+            return loginUser.id ? (
               <Dropdown
                 menu={{
                   items: [
@@ -97,10 +86,19 @@ export default function BasicLayout({ children }: Props) {
                       label: "退出登录",
                     },
                   ],
+                  onClick: async (event: { key: React.Key }) => {
+                    const { key } = event;
+                    // 退出登录
+                    if (key === "logout") {
+                      await userLogout();
+                    }
+                  },
                 }}
               >
                 {dom}
               </Dropdown>
+            ) : (
+              <div onClick={() => router.push("/user/login")}>{dom}</div>
             );
           },
         }}

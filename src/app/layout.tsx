@@ -9,7 +9,6 @@ import { Provider, useDispatch } from "react-redux";
 import { getLoginUserUsingGet } from "@/api/userController";
 import { setLoginUser } from "@/stores/loginUser";
 import AccessLayout from "@/access/AccessLayout";
-import accessEnum from "@/access/accessEnum";
 
 /**
  * 全局初始化逻辑
@@ -31,6 +30,7 @@ const InitLayout: React.FC<
     const res = await getLoginUserUsingGet();
     if (res.data) {
       // 更新全局用户状态
+      dispatch(setLoginUser(res.data));
     } else {
       // 测试登录
       // setTimeout(() => {
