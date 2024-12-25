@@ -1,6 +1,6 @@
 "use client";
 
-import { GithubFilled, LogoutOutlined } from "@ant-design/icons";
+import {GithubFilled, LogoutOutlined, UserOutlined} from "@ant-design/icons";
 import { ProLayout } from "@ant-design/pro-components";
 import { Dropdown, message } from "antd";
 import React from "react";
@@ -81,6 +81,11 @@ export default function BasicLayout({ children }: Props) {
                 menu={{
                   items: [
                     {
+                      key: "userCenter",
+                      icon: <UserOutlined />,
+                      label: "个人中心",
+                    },
+                    {
                       key: "logout",
                       icon: <LogoutOutlined />,
                       label: "退出登录",
@@ -91,6 +96,8 @@ export default function BasicLayout({ children }: Props) {
                     // 退出登录
                     if (key === "logout") {
                       await userLogout();
+                    } else if (key === "userCenter") {
+                      router.push("/user/center")
                     }
                   },
                 }}
