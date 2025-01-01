@@ -1,6 +1,8 @@
 "use client";
 
-import { listQuestionVoByPageUsingPost } from "@/api/questionController";
+import {
+  searchQuestionVoByPageUsingPost,
+} from "@/api/questionController";
 import type { ActionType, ProColumns } from "@ant-design/pro-components";
 import { ProTable } from "@ant-design/pro-components";
 import React, { useRef, useState } from "react";
@@ -36,11 +38,18 @@ const QuestionTable: React.FC = (props: Props) => {
    */
   const columns: ProColumns<API.QuestionVO>[] = [
     {
+      title: "搜索",
+      dataIndex: "searchText",
+      valueType: "text",
+      hideInTable: true,
+    },
+    {
       title: "标题",
       dataIndex: "title",
       valueType: "text",
+      hideInSearch: true,
       render: (_, record) => {
-        return <Link href={`/question/${record.id}`}>{record.title}</Link>
+        return <Link href={`/question/${record.id}`}>{record.title}</Link>;
       },
     },
     {
@@ -55,7 +64,6 @@ const QuestionTable: React.FC = (props: Props) => {
       },
     },
   ];
-
   return (
     <div className="question-table">
       <ProTable<API.QuestionVO>
@@ -86,9 +94,9 @@ const QuestionTable: React.FC = (props: Props) => {
           const sortField = Object.keys(sort)?.[0] || "createTime";
           const sortOrder = sort?.[sortField] || "descend";
 
-          const { data, code } = await listQuestionVoByPageUsingPost({
+          const { data, code } = await searchQuestionVoByPageUsingPost({
             ...params,
-            sortField,
+            sortField: '_score',
             sortOrder,
             ...filter,
           } as API.QuestionQueryRequest);
