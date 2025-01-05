@@ -69,6 +69,7 @@ const QuestionTable: React.FC = (props: Props) => {
       <ProTable<API.QuestionVO>
         actionRef={actionRef}
         size="large"
+        rowKey="id"
         search={{
           labelWidth: "auto",
         }}

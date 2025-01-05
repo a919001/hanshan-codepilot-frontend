@@ -1,6 +1,6 @@
 "use server";
 
-import {listQuestionVoByPageUsingPost, searchQuestionVoByPageUsingPost} from "@/api/questionController";
+import { searchQuestionVoByPageUsingPost } from "@/api/questionController";
 import React from "react";
 import { Flex, message } from "antd";
 import Title from "antd/es/typography/Title";

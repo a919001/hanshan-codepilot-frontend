@@ -1,4 +1,3 @@
-import { updateQuestionUsingPost } from "@/api/questionController";
 import { Form, message, Modal, Select } from "antd";
 import React, { useEffect } from "react";
 import {
@@ -99,7 +98,7 @@ const UpdateQuestionBankModal: React.FC<Props> = (props) => {
               const hide = message.loading("正在更新");
               try {
                 await removeQuestionBankQuestionUsingPost({
-                  questionId,
+                  questionIdList: questionId,
                   questionBankId: value,
                 });
                 hide();
@@ -113,7 +112,7 @@ const UpdateQuestionBankModal: React.FC<Props> = (props) => {
               return {
                 label: questionBank.title,
                 value: questionBank.id,
-              }
+              };
             })}
           />
         </Form.Item>

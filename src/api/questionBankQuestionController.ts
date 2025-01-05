@@ -17,6 +17,24 @@ export async function addQuestionBankQuestionUsingPost(
   });
 }
 
+/** batchAddQuestionsToQuestionBank POST /api/questionBankQuestion/add/batch */
+export async function batchAddQuestionsToQuestionBankUsingPost(
+  body: API.QuestionBankQuestionBatchAddRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseBoolean_>(
+    "/api/questionBankQuestion/add/batch",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: body,
+      ...(options || {}),
+    }
+  );
+}
+
 /** deleteQuestionBankQuestion POST /api/questionBankQuestion/delete */
 export async function deleteQuestionBankQuestionUsingPost(
   body: API.DeleteRequest,
@@ -117,6 +135,24 @@ export async function removeQuestionBankQuestionUsingPost(
     data: body,
     ...(options || {}),
   });
+}
+
+/** batchRemoveQuestionsFromQuestionBank POST /api/questionBankQuestion/remove/batch */
+export async function batchRemoveQuestionsFromQuestionBankUsingPost(
+  body: API.QuestionBankQuestionBatchRemoveRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseBoolean_>(
+    "/api/questionBankQuestion/remove/batch",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: body,
+      ...(options || {}),
+    }
+  );
 }
 
 /** updateQuestionBankQuestion POST /api/questionBankQuestion/update */
