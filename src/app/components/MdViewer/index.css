@@ -1,3 +1,15 @@
-.bytemd-toolbar-icon.bytemd-tippy.bytemd-tippy-right:last-child {
-    display: none;
+.md-viewer {
+
+    .bytemd-toolbar-icon.bytemd-tippy.bytemd-tippy-right:last-child {
+        display: none;
+    }
+
+    .markdown-body img {
+        border-style: none;
+        max-width: 100%;
+        box-sizing: content-box;
+        display: block; /* 将图片转换为块级元素 */
+        margin-left: auto; /* 自动设置左边距 */
+        margin-right: auto; /* 自动设置右边距 */
+    }
 }

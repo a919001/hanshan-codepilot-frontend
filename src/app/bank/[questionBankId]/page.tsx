@@ -13,9 +13,10 @@ import QuestionList from "@/app/components/QuestionList";
  * 题库详情页面
  * @constructor
  */
+// @ts-ignore
 export default async function BankPage({ params }) {
   const { questionBankId } = params;
-  let bank = undefined;
+let bank:API.QuestionBankVO = {};
   // 获取题库详情
   try {
     const res = await getQuestionBankVoByIdUsingGet({
@@ -24,8 +25,10 @@ export default async function BankPage({ params }) {
       // TODO 分页实现
       pageSize: 100,
     });
+    // @ts-ignore
     bank = res.data;
   } catch (e) {
+    // @ts-ignore
     console.log("获取题库详情失败，" + e.message);
   }
   // 错误处理
@@ -34,7 +37,9 @@ export default async function BankPage({ params }) {
   }
   // 获取第一道题，用于刷题按钮跳转
   let firstQuestionId = undefined;
+  // @ts-ignore
   if (bank.questionVOPage?.records && bank.questionVOPage.records.length > 0) {
+    // @ts-ignore
     firstQuestionId = bank.questionVOPage.records[0].id;
   }
 
@@ -42,12 +47,14 @@ export default async function BankPage({ params }) {
     <div id="bank-page" className="max-width-content">
       <Card>
         <Meta
+          // @ts-ignore
           avatar={<Avatar src={bank.picture} size={72} />}
           title={
             <Title level={3} style={{ marginBottom: 0 }}>
               {bank.title}
             </Title>
           }
+
           description={
             <>
               <Paragraph type="secondary">{bank.description}</Paragraph>

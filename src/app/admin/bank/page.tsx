@@ -147,7 +147,7 @@ const QuestionBankAdminPage: React.FC = () => {
         request={async (params, sort, filter) => {
           const sortField = Object.keys(sort)?.[0];
           const sortOrder = sort?.[sortField] ?? undefined;
-
+          // @ts-ignore
           const { data, code } = await listQuestionBankByPageUsingPost({
             ...params,
             sortField,
@@ -157,7 +157,9 @@ const QuestionBankAdminPage: React.FC = () => {
 
           return {
             success: code === 0,
+            // @ts-ignore
             data: data?.records || [],
+            // @ts-ignore
             total: Number(data?.total) || 0,
           };
         }}

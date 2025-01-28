@@ -32,6 +32,7 @@ const UpdateQuestionBankModal: React.FC<Props> = (props) => {
         questionId,
         pageSize: 20,
       });
+      // @ts-ignore
       const list = (res.data.records ?? []).map((item) => item.questionBankId);
       form.setFieldValue("questionBankIdList", list);
     } catch (e: any) {
@@ -55,6 +56,7 @@ const UpdateQuestionBankModal: React.FC<Props> = (props) => {
         sortField: "createTime",
         sortOrder: "descend",
       });
+      // @ts-ignore
       setQuestionBankList(res.data.records ?? []);
     } catch (e: any) {
       console.error("获取题库列表失败，" + e.message);
@@ -98,7 +100,8 @@ const UpdateQuestionBankModal: React.FC<Props> = (props) => {
               const hide = message.loading("正在更新");
               try {
                 await removeQuestionBankQuestionUsingPost({
-                  questionIdList: questionId,
+                  // @ts-ignore
+                  questionId: questionId,
                   questionBankId: value,
                 });
                 hide();

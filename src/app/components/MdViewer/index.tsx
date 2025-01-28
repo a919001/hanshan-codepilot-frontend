@@ -1,21 +1,25 @@
 import { Viewer } from "@bytemd/react";
 import gfm from "@bytemd/plugin-gfm";
+import gfmLocale from "@bytemd/plugin-gfm/locales/zh_Hans.json";
 import highlight from "@bytemd/plugin-highlight";
 import "bytemd/dist/index.css";
-import "highlight.js/styles/vs.css";
 import "./index.css";
-import "github-markdown-css/github-markdown-light.css";
 
 interface Props {
   value?: string;
+  onChange?: (v: string) => void;
+  placeholder?: string;
 }
 
-const plugins = [gfm(), highlight()];
+const plugins = [
+  gfm({
+    locale: gfmLocale,
+  }),
+  highlight(),
+];
 
 /**
  * Markdown 浏览器
- * @param props
- * @constructor
  */
 const MdViewer = (props: Props) => {
   const { value = "" } = props;

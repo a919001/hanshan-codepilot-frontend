@@ -1,5 +1,3 @@
-"use server";
-
 import "./index.css";
 import Title from "antd/es/typography/Title";
 import { Divider, Flex, message } from "antd";
@@ -8,6 +6,9 @@ import { listQuestionBankVoByPageUsingPost } from "@/api/questionBankController"
 import { listQuestionVoByPageUsingPost } from "@/api/questionController";
 import QuestionBankList from "@/app/components/QuestionBankList";
 import QuestionList from "@/app/components/QuestionList";
+
+// 本页面使用服务端渲染，禁用静态生成
+export const dynamic = 'force-dynamic';
 
 /**
  * 主页
@@ -25,7 +26,7 @@ export default async function HomePage() {
     });
     questionBankList = questionBankRes.data.records ?? [];
   } catch (e) {
-    message.error("获取题库列表失败，" + e.message);
+    console.error("获取题库列表失败，" + e.message);
   }
 
   try {
@@ -36,7 +37,7 @@ export default async function HomePage() {
     });
     questionList = questionRes.data.records ?? [];
   } catch (e) {
-    message.error("获取题目列表失败，" + e.message);
+    console.error("获取题目列表失败，" + e.message);
   }
 
   return (
@@ -53,9 +54,7 @@ export default async function HomePage() {
         <Title level={3}>最新题目</Title>
         <Link href="/questions">查看更多</Link>
       </Flex>
-      <div>
-        <QuestionList questionList={questionList} />
-      </div>
+      <QuestionList questionList={questionList} />
     </div>
   );
 }

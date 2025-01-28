@@ -1,38 +1,49 @@
+import type { FC } from "react";
 import { Editor } from "@bytemd/react";
 import gfm from "@bytemd/plugin-gfm";
+import gfmLocale from "@bytemd/plugin-gfm/locales/zh_Hans.json";
 import highlight from "@bytemd/plugin-highlight";
+import locale from "bytemd/locales/zh_Hans.json";
 import "bytemd/dist/index.css";
-import "highlight.js/styles/vs.css";
 import "./index.css";
-import "github-markdown-css/github-markdown-light.css";
 
 interface Props {
-  value?: string;
-  onChange?: (v: string) => void;
-  placeholder?: string;
+    value?: string;
+    onChange?: (v: string) => void;
+    placeholder?: string;
 }
 
-const plugins = [gfm(), highlight()];
+const plugins = [
+    gfm({
+        locale: gfmLocale,
+    }),
+    highlight(),
+];
 
 /**
  * Markdown 编辑器
- * @param props
- * @constructor
  */
-const MdEditor = (props: Props) => {
-  const { value = "", onChange, placeholder } = props;
+const MdEditor: FC<Props> = (props) => {
+    const { value = "", onChange, placeholder } = props;
 
-  return (
-    <div className="md-editor">
-      <Editor
-        value={value}
-        placeholder={placeholder}
-        mode="split"
-        plugins={plugins}
-        onChange={onChange}
-      />
-    </div>
-  );
+    return (
+        <div className="md-editor">
+            <Editor
+                value={value || ""}
+                placeholder={placeholder}
+                editorConfig={{
+                    // 不显示行数
+                    lineNumbers: false,
+                    autofocus: false,
+                }}
+                mode="split"
+                locale={locale}
+                plugins={plugins}
+                onChange={onChange}
+            />
+        </div>
+    );
 };
 
 export default MdEditor;
+

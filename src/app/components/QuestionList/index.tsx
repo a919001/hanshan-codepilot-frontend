@@ -8,9 +8,9 @@ import React from "react";
 import Link from "next/link";
 
 interface Props {
-  cardTitle: React.ReactNode;
-  questionList: API.QuestionVO[];
-  questionBankId?: number;
+    questionBankId?: number;
+    questionList: API.QuestionVO[];
+    cardTitle?: string;
 }
 
 /**

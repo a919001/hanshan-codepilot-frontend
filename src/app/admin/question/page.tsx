@@ -11,11 +11,10 @@ import { PlusOutlined } from "@ant-design/icons";
 import type { ActionType, ProColumns } from "@ant-design/pro-components";
 import { PageContainer, ProTable } from "@ant-design/pro-components";
 import { Button, message, Popconfirm, Space, Table, Typography } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import TagList from "@/app/components/TagList";
 import MdEditor from "@/app/components/MdEditor";
 import UpdateQuestionBankModal from "@/app/admin/question/components/UpdateQuestionBankModal";
-import { listQuestionBankVoByPageUsingPost } from "@/api/questionBankController";
 import BatchAddQuestionsToBankModel from "@/app/admin/question/components/BatchAddQuestionsToBankModel";
 import BatchRemoveQuestionsFromBankModel from "@/app/admin/question/components/BatchRemoveQuestionsFromBankModel";
 
@@ -94,37 +93,6 @@ const QuestionAdminPage: React.FC = () => {
     }
   };
 
-  const [questionBankList, setQuestionBankList] = React.useState<
-    API.QuestionBankVO[]
-  >([]);
-
-  // 获取题库列表
-  const getQuestionBankList = async () => {
-    // 题库数量不多，直接全量获取
-    const pageSize = 100;
-    try {
-      const res = await listQuestionBankVoByPageUsingPost({
-        pageSize,
-        sortField: "createTime",
-        sortOrder: "descend",
-      });
-      setQuestionBankList(res.data.records ?? []);
-    } catch (e: any) {
-      console.error("获取题库列表失败，" + e.message);
-    }
-  };
-
-  useEffect(() => {
-    getQuestionBankList();
-  }, []);
-
-  const options = questionBankList.map((questionBank) => {
-    return {
-      label: questionBank.title,
-      value: questionBank.id,
-    };
-  });
-
   /**
    * 表格列配置
    */
@@ -139,7 +107,6 @@ const QuestionAdminPage: React.FC = () => {
       title: "所属题库",
       dataIndex: "questionBankId",
       valueType: "select",
-      fieldProps: { options },
       hidden: true,
       hideInForm: true,
     },
@@ -154,15 +121,11 @@ const QuestionAdminPage: React.FC = () => {
       valueType: "text",
       hideInSearch: true,
       width: 240,
-      renderFormItem: (
-        _,
-        { type, defaultRender, formItemProps, fieldProps, ...rest },
-        form,
-      ) => {
-        return (
-          // value 和 onchange 会通过 form 自动注入
-          <MdEditor {...fieldProps} />
-        );
+      // @ts-ignore
+      renderFormItem: (item, { fieldProps }, form) => {
+        // 编写要渲染的表单项
+        // value 和 onchange 会通过 form 自动注入
+        return <MdEditor {...fieldProps} />;
       },
     },
     {
@@ -171,15 +134,11 @@ const QuestionAdminPage: React.FC = () => {
       valueType: "text",
       hideInSearch: true,
       width: 640,
-      renderFormItem: (
-        _,
-        { type, defaultRender, formItemProps, fieldProps, ...rest },
-        form,
-      ) => {
-        return (
-          // value 和 onchange 会通过 form 自动注入
-          <MdEditor {...fieldProps} />
-        );
+      // @ts-ignore
+      renderFormItem: (item, { fieldProps }, form) => {
+        // 编写要渲染的表单项
+        // value 和 onchange 会通过 form 自动注入
+        return <MdEditor {...fieldProps} />;
       },
     },
     {
@@ -337,7 +296,7 @@ const QuestionAdminPage: React.FC = () => {
         request={async (params, sort, filter) => {
           const sortField = Object.keys(sort)?.[0];
           const sortOrder = sort?.[sortField] ?? undefined;
-
+          // @ts-ignore
           const { data, code } = await listQuestionByPageUsingPost({
             ...params,
             sortField,
@@ -347,7 +306,9 @@ const QuestionAdminPage: React.FC = () => {
 
           return {
             success: code === 0,
+            // @ts-ignore
             data: data?.records || [],
+            // @ts-ignore
             total: Number(data?.total) || 0,
           };
         }}
@@ -386,24 +347,24 @@ const QuestionAdminPage: React.FC = () => {
         }}
       />
       <BatchAddQuestionsToBankModel
-          visible={batchAddQuestionToBankModalVisible}
-          questionIdList={selectedQuestionIdList}
-          onSubmit={() => {
-            setBatchAddQuestionToBankModalVisible(false);
-          }}
-          onCancel={() => {
-            setBatchAddQuestionToBankModalVisible(false);
-          }}
+        visible={batchAddQuestionToBankModalVisible}
+        questionIdList={selectedQuestionIdList}
+        onSubmit={() => {
+          setBatchAddQuestionToBankModalVisible(false);
+        }}
+        onCancel={() => {
+          setBatchAddQuestionToBankModalVisible(false);
+        }}
       />
       <BatchRemoveQuestionsFromBankModel
-          visible={batchRemoveQuestionFromBankModalVisible}
-          questionIdList={selectedQuestionIdList}
-          onSubmit={() => {
-            setBatchRemoveQuestionFromBankModalVisible(false);
-          }}
-          onCancel={() => {
-            setBatchRemoveQuestionFromBankModalVisible(false);
-          }}
+        visible={batchRemoveQuestionFromBankModalVisible}
+        questionIdList={selectedQuestionIdList}
+        onSubmit={() => {
+          setBatchRemoveQuestionFromBankModalVisible(false);
+        }}
+        onCancel={() => {
+          setBatchRemoveQuestionFromBankModalVisible(false);
+        }}
       />
     </PageContainer>
   );

@@ -29,7 +29,7 @@ export default async function QuestionsPage({ searchParams }) {
     questionList = res.data.records ?? [];
     total = res.data.total;
   } catch (e) {
-    message.error("获取题目列表失败，" + e.message);
+    console.error("获取题目列表失败，" + e.message);
   }
 
   return (

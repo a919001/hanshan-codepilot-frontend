@@ -26,7 +26,7 @@ export default function UserCenterPage() {
       <Row gutter={[16, 16]}>
         <Col xs={24} md={6}>
           <Card style={{ textAlign: "center" }}>
-            <Avatar src={user.userAvatar} size={72} />
+            <Avatar src={user.userAvatar || "/assets/logo.png"} size={72} />
             <div style={{ marginBottom: 16 }} />
             <Card.Meta
               title={<Title level={4}>{user.userName}</Title>}
@@ -58,7 +58,7 @@ export default function UserCenterPage() {
                 <CalendarChart />
               </>
             )}
-            {activeTabKey === "others" && <>bbb</>}
+            {activeTabKey === "others" && <></>}
           </Card>
         </Col>
       </Row>

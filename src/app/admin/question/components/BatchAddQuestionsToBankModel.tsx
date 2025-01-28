@@ -33,6 +33,7 @@ const BatchAddQuestionsToBankModel: React.FC<Props> = (props) => {
         sortField: "createTime",
         sortOrder: "descend",
       });
+      // @ts-ignore
       setQuestionBankList(res.data.records ?? []);
     } catch (e: any) {
       console.error("获取题库列表失败，" + e.message);
